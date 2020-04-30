@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="db" uuid="ec2dede6-8831-430e-bedc-7d1274ee303a">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:D:\Documents\Ingénieur\A2\Archi SI\the_call_of_cthulhu\web_service_python\db.sqlite3</jdbc-url>
+    </data-source>
+  </component>
+</project>

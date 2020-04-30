@@ -1,4 +1,5 @@
 package com.cthulhu.web_service;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
@@ -50,7 +51,7 @@ public class WebServiceApplication {
 
 	  private String getRESTResponse(String url, MultiValueMap<String, String> params){
 	     RestTemplate template = new RestTemplate();
-	     HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params);
+	     HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params);
 	    String response = "";
 	     try{
 	        ResponseEntity<String> responseEntity = template.exchange(url, HttpMethod.POST, requestEntity,  String.class);
@@ -62,3 +63,4 @@ public class WebServiceApplication {
 	    return response;
 	  }
 }
+
