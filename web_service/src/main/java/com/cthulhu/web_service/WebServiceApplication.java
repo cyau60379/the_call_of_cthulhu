@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-@RestController
+@Controller
 public class WebServiceApplication {
 
 	public static void main(String[] args) {
@@ -27,7 +28,7 @@ public class WebServiceApplication {
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
 		return String.format("Hello %s!", name);
     }
-	
+	/*
 	@RequestMapping( value= "/controller3", method = RequestMethod.POST)
 	 public @ResponseBody void process(@RequestBody String jsonString){
 
@@ -48,7 +49,7 @@ public class WebServiceApplication {
 	      getRESTResponse(url, params);
 
 	  }
-
+*/
 	  private String getRESTResponse(String url, MultiValueMap<String, String> params){
 	     RestTemplate template = new RestTemplate();
 	     HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params);
