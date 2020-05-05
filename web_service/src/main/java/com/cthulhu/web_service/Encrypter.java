@@ -1,9 +1,8 @@
 package com.cthulhu.web_service;
 
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.Base64;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -22,7 +21,7 @@ public class Encrypter {
 	 * @param publicKey: the public key which will be used to encrypt the message
 	 * @return the encrypted message
 	 */
-	public static String encrypt(String data, PublicKey publicKey) {
+	public static String encrypt(String data, Key publicKey) {
 		Cipher encoder;
 		try {
 			encoder = Cipher.getInstance("RSA/ECB/PKCS1Padding");
@@ -46,7 +45,7 @@ public class Encrypter {
 	 * @param privateKey: the private key which will be used to decrypt the message
 	 * @return the decrypted message
 	 */
-	public static String decrypt(String data, PrivateKey privateKey) {
+	public static String decrypt(String data, Key privateKey) {
 		Cipher decoder;
 		try {
 			decoder = Cipher.getInstance("RSA/ECB/PKCS1Padding");
@@ -68,7 +67,7 @@ public class Encrypter {
 	/*
 	public static void main(String[] args) {
 		String data = "message";
-		String encrypt = Encrypter.encrypt(data, KeyLoader.getPublicKey("src\\main\\resources\\static\\publicKeyDjango.der"));
+		String encrypt = Encrypter.encrypt(data, KeyLoader.getPublicKey("src\\main\\resources\\static\\public_key_Django.der"));
 		System.out.println("message: " + encrypt);
 		System.out.println("message: " + Encrypter.decrypt(encrypt, KeyLoader.getPrivateKey("src\\main\\resources\\static\\privateKeySpring.der")));
 	}

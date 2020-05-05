@@ -2,16 +2,32 @@ body{
     margin: 0;
     display: grid;
     grid-template-areas:
-            'logo main'
-            'menu main';
-    grid-template-columns: 20vw auto;
+            'logo main response'
+            'menu main response';
+    grid-template-columns: 20vw auto auto;
     grid-template-rows: 12vw calc(100vh - 12vw);
+    font-family: Arial;
+}
+
+.researchForm{
+    display: grid;
+    width: 40vw;
+    margin: auto;
+}
+
+.input{
+    width: 100%;
+}
+
+label{
+    text-align: initial;
+    margin: auto auto 10px auto;
+    display: grid;
 }
 
 .button{
     border: none;
-    font-family: Arial;
-    font-size: 1.7vw;
+    font-size: 20px;
 }
 
 .button:hover{
@@ -42,6 +58,7 @@ body{
     height: 70px;
     background-color: rgb(172, 188, 141);
     color: rgb(113, 122, 70);
+    font-size: 1.7vw;
 }
 
 
@@ -58,4 +75,11 @@ body{
     background-color: rgb(172, 188, 141);
     text-align: center;
     grid-area: main;
+}
+
+
+#responseBlock{
+    background-color: rgb(172, 188, 141);
+    text-align: center;
+    grid-area: response;
 }

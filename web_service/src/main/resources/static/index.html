@@ -3,18 +3,30 @@
 <head>
     <title>Cthulhu Research</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="_csrf" content="${_csrf.token}"/>
     <link rel="stylesheet" type="text/css" href="global.css">
 </head>
 <body>
+
+<script src="actions.js"></script>
+
 <div id="logoBlock">
     <img id="logo" src="logo.png" alt="LOGO">
 </div>
 <div id="leftBlock">
-    <input class="button leftButton" type="button" value="Creature">
+    <input class="button leftButton" type="button" value="Creature" onclick="return onclickCreature()">
     <input class="button leftButton" type="button" value="Author">
     <input class="button leftButton" type="button" value="Book">
 </div>
 <div id="mainBlock">
+    <h1>
+        Welcome to Cthulhu Research!
+    </h1>
+    <p>
+        Choose one of the category on the left side to begin
+    </p>
+</div>
+<div id="responseBlock">
 
 </div>
 </body>
