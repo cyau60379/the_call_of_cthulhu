@@ -34,48 +34,19 @@ function creatureSearch(){
     request = new XMLHttpRequest();
     request.onreadystatechange = function (){    //apply the function if the if condition passed
         if (this.readyState === 4 && this.status === 200) {
-            document.getElementById("responseBlock").innerHTML = this.responseText;
+            console.log(this.responseText);
+            let jsonResponse = JSON.parse(this.responseText);
+            document.getElementById("responseBlock").innerHTML = "";
+            for(let i = 0; i < jsonResponse.length; i++){
+                document.getElementById("responseBlock").innerHTML += "<div style='border: black solid'><h3>Name:</h3><p>" + jsonResponse[i]['name'] + "</p>"
+                    + "<h3>Description:</h3><p>" + jsonResponse[i]['description'] + "</p>"
+                    + "<h3>Affiliation:</h3><p>" + jsonResponse[i]['affiliation'] + "</p>"
+                    + "<h3>Creator:</h3><p>" + jsonResponse[i]['author'] + "</p>"
+                    + "<h3>First appearance:</h3><p>" + jsonResponse[i]['book'] + " (" + jsonResponse[i]['year'] + ")</p></div>";
+            }
         }
     };
     request.open("POST", "/creatureSearch", true);
     request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
     request.send(JSON.stringify({"name": name, "author": author, "book": book, "affiliation": affiliation}));
-}
-
-
-function modificationUser() {
-    //recuperation des informations du formulaire modification
-    let nom = document.forms["modification"].elements["user_nom"].value;
-    let prenom = document.forms["modification"].elements["user_prenom"].value;
-    let mail = document.forms["modification"].elements["user_email"].value;
-    let phone = document.forms["modification"].elements["user_phone"].value;
-    let naissance = document.forms["modification"].elements["user_date"].value;
-    let question = document.forms["modification"].elements["user_question"].value;
-    let reponse = document.forms["modification"].elements["user_response"].value;
-
-    let date = naissance.split("-");
-    if((date[0] > 2020) || (date[0] < 1900)){                   //verification de la date pour eviter tout problème avec
-        document.getElementById("divReponse").style.zIndex = '1';
-        document.getElementById("divReponse").style.display = 'initial';
-        alerter("Date de naissance invalide");
-    } else if(mail !== "" && !checkMail(mail)) {                               //verification que l'adresse est bien une adresse mail
-        document.getElementById("divReponse").style.zIndex = '1';
-        document.getElementById("divReponse").style.display = 'initial';
-        alerter("Mail non valide");
-    } else {
-        let request;                         //requete http permettant d'envoyer au fichier serveur de modifier la page
-        request = new XMLHttpRequest();
-        request.onreadystatechange = function () {                    //applique la fonction défini après lorsque le changement s'opère
-            if (this.readyState === 4 && this.status === 200) {      // 4 = reponse prete / 200 = OK
-                document.getElementById("divReponse").innerHTML = this.responseText;   //rempli le corps de la page avec la réponse
-                document.getElementById("divReponse").style.zIndex = '1';
-                document.getElementById("divReponse").style.display = 'initial';
-            }
-        };
-        request.open("POST", "controller/editionProfil.php", true);
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.send("user_prenom=" + prenom + "&user_nom=" + nom
-            + "&user_email=" + mail + "&user_phone=" + phone
-            + "&user_date=" + naissance + "&user_question=" + question + "&user_response=" + reponse);                      //envoie le resultat de la requete au serveur
-    }
 }

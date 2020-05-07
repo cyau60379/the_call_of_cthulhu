@@ -15,14 +15,14 @@ class Creature(models.Model):
 class Author(models.Model):
     first_name = models.CharField(max_length=200)
     surname = models.CharField(max_length=200)
-    birth_date = models.DateField()
-    death_date = models.DateField(null=True)
+    birth_date = models.IntegerField()
+    death_date = models.IntegerField(null=True)
     image_link = models.CharField(max_length=200, default="")
 
 
 class Book(models.Model):
     name = models.CharField(max_length=200)
-    year_of_creation = models.DateField()
+    year_of_creation = models.IntegerField()
     image_link = models.CharField(max_length=200, default="")
 
 

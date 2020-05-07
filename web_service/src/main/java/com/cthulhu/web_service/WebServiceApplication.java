@@ -3,6 +3,10 @@ package com.cthulhu.web_service;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+
+import org.json.JSONObject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.MediaType;
@@ -19,8 +23,8 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class WebServiceApplication {
 
-	private final String PRIVATE_KEY = "src\\main\\resources\\static\\private_key_Spring.der";
-	private final String PUBLIC_KEY_DJANGO = "src\\main\\resources\\static\\public_key_Django.der";
+	private final PrivateKey PRIVATE_KEY = KeyLoader.getPrivateKey("src\\main\\resources\\static\\private_key_Spring.der");
+	private final PublicKey PUBLIC_KEY_DJANGO = KeyLoader.getPublicKey("src\\main\\resources\\static\\public_key_Django.der");
 	
 	public static void main(String[] args) {
 		SpringApplication.run(WebServiceApplication.class, args);
@@ -35,42 +39,16 @@ public class WebServiceApplication {
     public String creatureSearch(@RequestBody String jsonString) throws URISyntaxException, NoSuchAlgorithmException {
 		return getRESTResponse("http://127.0.0.1:8000/web_service/creatureSearch", jsonString);
     }
-	
-	/*
-	@RequestMapping( value= "/controller3", method = RequestMethod.POST)
-	 public @ResponseBody void process(@RequestBody String jsonString){
 
-	    //retrieve jsonString and transform it to retrieve all data
-		String request = "requestType"; //Get the request type from request
-	    String url = "";
-	    MultiValueMap<String, String> params= null;
-	    switch(request){
-	         case "request1": //how to call REST API 1?
-	            url = "/controller1";
-	            params = ; //Get the parameter map from request 
-	         case "request2": //how to call REST API 2?
-	            url = "/controller2";
-	            params = request2Param; //Get the parameter map from request 
-	      }
-
-	      //Now call the method with parameters
-	      getRESTResponse(url, params);
-
-	  }
-*/
 
 	private String getRESTResponse(String url, String jsonString) throws URISyntaxException, NoSuchAlgorithmException{
 		RestTemplate template = new RestTemplate();
-		String encrypted = Encrypter.encrypt(jsonString, KeyLoader.getPublicKey(PUBLIC_KEY_DJANGO));
-		/*
+		String encrypted = Encrypter.encrypt(jsonString, PUBLIC_KEY_DJANGO);
 		JSONObject json = new JSONObject();
-		json.append("message", encrypted);
-		MessageDigest digest = MessageDigest.getInstance("SHA-256");
-		byte[] hashedJson = digest.digest(jsonString.getBytes(StandardCharsets.UTF_8));
-		String signature = Encrypter.encrypt(hashedJson.toString(), KeyLoader.getPrivateKey(PRIVATE_KEY));
-		json.append("signature", signature);
-		*/
-		RequestEntity<String> request = RequestEntity.post(new URI(url)).accept(MediaType.APPLICATION_JSON).body(encrypted);
+		json.put("message", encrypted);
+		String signature = Encrypter.sign(jsonString, PRIVATE_KEY);
+		json.put("signature", signature);
+		RequestEntity<String> request = RequestEntity.post(new URI(url)).accept(MediaType.APPLICATION_JSON).body(json.toString());
 	    String response = "";
 	    try{
 	    	ResponseEntity<String> responseEntity = template.exchange(request,  String.class);
@@ -78,7 +56,15 @@ public class WebServiceApplication {
 	    } catch(Exception e){
 	    	response = e.getMessage();
 	    }
-	    return response;
+	    JSONObject jsonResponse = new JSONObject(response);
+	    String message = jsonResponse.getString("message");
+	    String messageSignature = jsonResponse.getString("signature");
+	    boolean isVerified = Encrypter.verify(message, messageSignature, PUBLIC_KEY_DJANGO);
+	    if(!isVerified) {
+	    	return Encrypter.decrypt(message, PRIVATE_KEY);
+	    } else {
+	    	return "Not verified";
+	    }
 	}
 }
 
