@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -53,16 +54,27 @@ public class WebServiceApplication {
 	    try{
 	    	ResponseEntity<String> responseEntity = template.exchange(request,  String.class);
 	        response = responseEntity.getBody();
+	        System.out.println("Reponse received");
 	    } catch(Exception e){
+	    	System.out.println("Failure to get response");
 	    	response = e.getMessage();
 	    }
 	    JSONObject jsonResponse = new JSONObject(response);
-	    String message = jsonResponse.getString("message");
-	    String messageSignature = jsonResponse.getString("signature");
-	    boolean isVerified = Encrypter.verify(message, messageSignature, PUBLIC_KEY_DJANGO);
+	    JSONArray message = jsonResponse.getJSONArray("message");
+	    JSONArray messageSignature = jsonResponse.getJSONArray("signature");
+	    boolean isVerified = true;
+	    for(int i = 0; i < message.length(); i++) {
+	    	isVerified &= Encrypter.verify(message.getString(i), messageSignature.getString(i), PUBLIC_KEY_DJANGO);
+	    }
 	    if(isVerified) {
-	    	return Encrypter.decrypt(message, PRIVATE_KEY);
+	    	System.out.println("Verified");
+	    	JSONArray returningResponse = new JSONArray();
+		    for(int i = 0; i < message.length(); i++) {
+		    	returningResponse.put(new JSONObject(Encrypter.decrypt(message.getString(i), PRIVATE_KEY)));
+		    }
+		    return returningResponse.toString();
 	    } else {
+	    	System.out.println("Not verified");
 	    	return "Not verified";
 	    }
 	}

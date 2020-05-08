@@ -6,17 +6,13 @@ function onclickCreature(){
         "        <label>\n" +
         "            Name: <input class=\"input\" name=\"name\">\n" +
         "        </label>\n" +
-        "\n" +
         "        <label>\n" +
-        "            Author: <input class=\"input\" name=\"author\">\n" +
-        "        </label>\n" +
-        "\n" +
-        "        <label>\n" +
-        "            Book: <input class=\"input\" name=\"book\">\n" +
-        "        </label>\n" +
-        "\n" +
-        "        <label>\n" +
-        "            Affiliation: <input class=\"input\" name=\"affiliation\">\n" +
+        "<select id=\"search\" name='searchType'>\n" +
+        "  <option value=\"creature\">creature</option>\n" +
+        "  <option value=\"author\">author</option>\n" +
+        "  <option value=\"book\">book</option>\n" +
+        "  <option value=\"affiliation\">affiliation</option>\n" +
+        "</select>" +
         "        </label>\n" +
         "\n" +
         "        <div>\n" +
@@ -27,9 +23,7 @@ function onclickCreature(){
 
 function creatureSearch(){
     let name = document.forms["researchForm"].elements["name"].value;
-    let author = document.forms["researchForm"].elements["author"].value;
-    let book = document.forms["researchForm"].elements["book"].value;
-    let affiliation = document.forms["researchForm"].elements["affiliation"].value;
+    let searchType = document.forms["researchForm"].elements["searchType"].value;
     let request;    //http request to ask for information about creature
     request = new XMLHttpRequest();
     request.onreadystatechange = function (){    //apply the function if the if condition passed
@@ -48,5 +42,5 @@ function creatureSearch(){
     };
     request.open("POST", "/creatureSearch", true);
     request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-    request.send(JSON.stringify({"name": name, "author": author, "book": book, "affiliation": affiliation}));
+    request.send(JSON.stringify({"name": name, "searchType": searchType}));
 }

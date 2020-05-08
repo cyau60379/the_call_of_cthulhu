@@ -1,4 +1,7 @@
 import base64
+import json
+import zlib
+
 from web_service.KeyLoader import *
 
 PUBLIC_KEY_SPRING = get_public_key()
@@ -28,11 +31,11 @@ def encrypt_data(message):
     """
     Function to encrypt data before sending it
     :param message: the json message to be sent
-    :return: the JSON which will be sent to the other web server
+    :return: one part of the message and the signature
     """
-    new_message = message.encode()
+
+    new_message = json.dumps(message).encode()
+    print(new_message)
     response_body = rsa.encrypt(new_message, PUBLIC_KEY_SPRING)
     signature = rsa.sign(response_body, PRIVATE_KEY, "SHA-256")
-    json_response = {'message': base64.b64encode(response_body).decode(),
-                     'signature': base64.b64encode(signature).decode()}
-    return json_response
+    return base64.b64encode(response_body).decode(), base64.b64encode(signature).decode()
