@@ -100,7 +100,7 @@ public class Encrypter {
 		try {
 			publicSignature = Signature.getInstance("SHA256withRSA");
 			publicSignature.initVerify(publicKey);
-			publicSignature.update(data.getBytes());
+			publicSignature.update(Base64.getDecoder().decode(data));
 			return publicSignature.verify(Base64.getDecoder().decode(signature));
 		} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
 			e.printStackTrace();

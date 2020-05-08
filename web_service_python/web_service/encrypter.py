@@ -32,8 +32,7 @@ def encrypt_data(message):
     """
     new_message = message.encode()
     response_body = rsa.encrypt(new_message, PUBLIC_KEY_SPRING)
-    hash_message = rsa.compute_hash(new_message, 'SHA-256')
-    signature = rsa.sign(hash_message, PRIVATE_KEY, "SHA-256")
+    signature = rsa.sign(response_body, PRIVATE_KEY, "SHA-256")
     json_response = {'message': base64.b64encode(response_body).decode(),
                      'signature': base64.b64encode(signature).decode()}
     return json_response

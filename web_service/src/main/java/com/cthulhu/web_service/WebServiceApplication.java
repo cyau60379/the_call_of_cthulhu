@@ -60,7 +60,7 @@ public class WebServiceApplication {
 	    String message = jsonResponse.getString("message");
 	    String messageSignature = jsonResponse.getString("signature");
 	    boolean isVerified = Encrypter.verify(message, messageSignature, PUBLIC_KEY_DJANGO);
-	    if(!isVerified) {
+	    if(isVerified) {
 	    	return Encrypter.decrypt(message, PRIVATE_KEY);
 	    } else {
 	    	return "Not verified";
