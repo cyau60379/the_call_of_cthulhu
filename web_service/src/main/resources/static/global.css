@@ -61,8 +61,7 @@ label{
     font-size: 1.7vw;
 }
 
-
-.leftButton:hover {
+.leftButton:hover, .activated {
     background-color: rgb(113, 122, 70);
     color: rgb(172, 188, 141);
 }
@@ -82,4 +81,6 @@ label{
     background-color: rgb(172, 188, 141);
     text-align: center;
     grid-area: response;
+    overflow-x: auto;
+    overflow-y: auto;
 }

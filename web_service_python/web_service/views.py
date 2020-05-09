@@ -7,11 +7,17 @@ from web_service.models import *
 
 @csrf_exempt
 def creature_search(request):
-    json_request = json.loads(request.body.decode())
-    message_body = verify_authenticity(json_request)
+    """
+    Function executed when the URL is [ip or URL]/web_service/creatureSearch
+    :param request: the POST request sent by the other web service
+    :return: the JSON response which will be sent to the other web_service
+    """
+    json_request = json.loads(request.body.decode())   # transform string to JSON
+    message_body = verify_authenticity(json_request)   # verify the signature of the message
     if message_body == "No":
-        error = {'message': 'error'}
-        return JsonResponse(error)
+        error_message, error_signature = encrypt_data('error')
+        error = {'message': error_message, 'signature': error_signature}
+        return JsonResponse(error)  # send to the other web service the error response
     else:
         message_json = json.loads(message_body)
         search_name = message_json['name']
@@ -26,8 +32,11 @@ def creature_search(request):
                                                        'creaturebook__book__name',
                                                        'creaturebook__book__year_of_creation',
                                                        'affiliation__name')
+        # List of objects from the DB with the chosen columns
+        # (the lines like authorcreature__author__first_name make the JOIN automatically)
+
         if search_type == "creature":
-            creature_list = creature_object_list.filter(name=search_name)
+            creature_list = creature_object_list.filter(name=search_name)  # filter == WHERE in SQL
         elif search_type == "author":
             author_name = search_name.split(" ")
             creature_list = creature_object_list.filter(authorcreature__author__surname=author_name[-1])
@@ -38,6 +47,7 @@ def creature_search(request):
         else:
             creature_list = []
 
+        # for each JSON from the query, simplify the key, encrypt the message and create the signature for it
         for creature in creature_list:
             message, signature = encrypt_data({'name': creature['name'],
                                                'description': creature['description'],
@@ -49,6 +59,5 @@ def creature_search(request):
                                                'affiliation': creature['affiliation__name']})
             response_list.append(message)
             signature_list.append(signature)
-        print("response: ", response_list)
         response_json = {'message': response_list, 'signature': signature_list}
-        return JsonResponse(response_json)
+        return JsonResponse(response_json)  # send the JSON to the other web service

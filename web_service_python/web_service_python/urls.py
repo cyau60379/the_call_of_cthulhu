@@ -18,5 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('web_service/', include('web_service.urls')),
+    # when the path is like [ip or URL]/web_service/[action] go to the urls.py from web_service folder
+    # and search if [action] is in the file.
     path('admin/', admin.site.urls),
 ]

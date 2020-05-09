@@ -1,3 +1,6 @@
+/**
+ * When clicking on the creature button, the main block change
+ */
 function onclickCreature(){
     document.getElementById("mainBlock").innerHTML = "    <form name=\"researchForm\" class=\"researchForm\">\n" +
         "        <h1>\n" +
@@ -19,8 +22,12 @@ function onclickCreature(){
         "            <input type=\"button\" class=\"button\" onclick=\"return creatureSearch()\" value=\"search\">\n" +
         "        </div>\n" +
         "    </form>";
+    buttonActivation("creature");
 }
 
+/**
+ * Print the response from the server in the response block after the content was erased
+ */
 function creatureSearch(){
     let name = document.forms["researchForm"].elements["name"].value;
     let searchType = document.forms["researchForm"].elements["searchType"].value;
@@ -43,4 +50,20 @@ function creatureSearch(){
     request.open("POST", "/creatureSearch", true);
     request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
     request.send(JSON.stringify({"name": name, "searchType": searchType}));
+}
+
+/**
+ * Activate the button with the chosen id.
+ * @param buttonId
+ */
+function buttonActivation(buttonId) {
+    let len = document.getElementsByClassName("leftButton").length;
+    for(let i = 0; i < len; i++){
+        if(document.getElementsByClassName("leftButton")[i].classList.contains("activated")){
+            document.getElementsByClassName("leftButton")[i].classList.remove("activated");
+        }
+        if(document.getElementsByClassName("leftButton")[i].id == buttonId){
+            document.getElementsByClassName("leftButton")[i].classList.add("activated");
+        }
+    }
 }

@@ -1,9 +1,5 @@
 package com.cthulhu.web_service;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -11,8 +7,6 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.util.Base64;
-import java.util.zip.GZIPInputStream;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -113,32 +107,6 @@ public class Encrypter {
 			return false;
 		}
 	}
-
-	/*
-	public static String decompress(byte[] data) {
-        if (data == null || data.length == 0) {
-            return new String(data);
-        }
-        GZIPInputStream gZip;
-        String outStr = "";
-        String line;
-		try {
-			gZip = new GZIPInputStream(new ByteArrayInputStream(data));
-			BufferedReader bf = new BufferedReader(new InputStreamReader(gZip, "UTF-8"));
-	        while ((line = bf.readLine()) != null) {
-	          outStr += line;
-	        }
-	        System.out.println("Success");
-	        System.out.println(outStr);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("Failure");
-			outStr = "Failure";
-		}
-        return outStr;
-     }
-	
-	*/
 
 	/*
 	public static void main(String[] args) {

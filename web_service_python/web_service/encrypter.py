@@ -35,7 +35,6 @@ def encrypt_data(message):
     """
 
     new_message = json.dumps(message).encode()
-    print(new_message)
     response_body = rsa.encrypt(new_message, PUBLIC_KEY_SPRING)
     signature = rsa.sign(response_body, PRIVATE_KEY, "SHA-256")
     return base64.b64encode(response_body).decode(), base64.b64encode(signature).decode()
