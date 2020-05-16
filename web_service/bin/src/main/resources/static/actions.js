@@ -47,69 +47,9 @@ function creatureSearch(){
             }
         }
     };
-    request.open("GET", "/creatureSearch/" + searchType + "?name=" + name, true);
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.send();
-}
-
-/**
- * When clicking on the author button, the main block change
- */
-function onclickAuthor(){
-    document.getElementById("mainBlock").innerHTML = "    <form name=\"researchForm\" class=\"researchForm\">\n" +
-        "        <h1>\n" +
-        "            Author Research\n" +
-        "        </h1>\n" +
-        "        <label>\n" +
-        "            Search: <input class=\"input\" name=\"name\">\n" +
-        "        </label>\n" +
-        "        <label>\n" +
-        "<select id=\"search\" name='searchType'>\n" +
-        "  <option value=\"surname\">surname</option>\n" +
-        "  <option value=\"first_name\">first name</option>\n" +
-        "  <option value=\"birth\">birth date</option>\n" +
-        "  <option value=\"death\">death date</option>\n" +
-        "</select>" +
-        "        </label>\n" +
-        "\n" +
-        "        <div>\n" +
-        "            <input type=\"button\" class=\"button\" onclick=\"return authorSearch()\" value=\"search\">\n" +
-        "        </div>\n" +
-        "    </form>";
-    buttonActivation("author");
-}
-
-/**
- * Print the response from the server in the response block after the content was erased
- */
-function authorSearch(){
-    let name = document.forms["researchForm"].elements["name"].value;
-    let searchType = document.forms["researchForm"].elements["searchType"].value;
-    let request;    //http request to ask for information about creature
-    request = new XMLHttpRequest();
-    request.onreadystatechange = function (){    //apply the function if the if condition passed
-        if (this.readyState === 4 && this.status === 200) {
-            console.log(this.responseText);
-            let jsonResponse = JSON.parse(this.responseText);
-            let str = "";
-            for(let i = 0; i < jsonResponse.length; i++){
-                str += "<div style='border: black solid'><h3>Name:</h3><p>" + jsonResponse[i]['name'] + "</p>"
-                    + "<h3>Dates:</h3><p>" + jsonResponse[i]['date'] + "</p><h3>Books:</h3>";
-                for(let j = 0; j < jsonResponse[i]['book'].length; j++){
-                    str += "<p>" + jsonResponse[i]['book'][j] + "</p>";
-                }
-                str += "<h3>Creatures:</h3>";
-                for(let j = 0; j < jsonResponse[i]['book'].length; j++){
-                    str += "<p>" + jsonResponse[i]['creature'][j] + "</p>";
-                }
-                str += "</div>";
-                document.getElementById("responseBlock").innerHTML = str;
-            }
-        }
-    };
-    request.open("GET", "/authorSearch/" + searchType + "?name=" + name, true);
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.send();
+    request.open("POST", "/creatureSearch", true);
+    request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    request.send(JSON.stringify({"name": name, "searchType": searchType}));
 }
 
 /**

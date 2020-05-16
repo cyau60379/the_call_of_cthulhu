@@ -31,10 +31,16 @@ def encrypt_data(message):
     """
     Function to encrypt data before sending it
     :param message: the json message to be sent
-    :return: one part of the message and the signature
+    :return: the message and the signature for each part of the message
     """
 
     new_message = json.dumps(message).encode()
-    response_body = rsa.encrypt(new_message, PUBLIC_KEY_SPRING)
-    signature = rsa.sign(response_body, PRIVATE_KEY, "SHA-256")
-    return base64.b64encode(response_body).decode(), base64.b64encode(signature).decode()
+    message_list = [new_message[i:i+200] for i in range(0, len(new_message), 200)]
+    response_list = []
+    signature_list = []
+    for byte in message_list:
+        response_body = rsa.encrypt(byte, PUBLIC_KEY_SPRING)
+        signature = rsa.sign(response_body, PRIVATE_KEY, "SHA-256")
+        response_list.append(base64.b64encode(response_body).decode())
+        signature_list.append(base64.b64encode(signature).decode())
+    return response_list, signature_list

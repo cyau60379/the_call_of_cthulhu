@@ -1,0 +1,86 @@
+body{
+    margin: 0;
+    display: grid;
+    grid-template-areas:
+            'logo main response'
+            'menu main response';
+    grid-template-columns: 20vw auto auto;
+    grid-template-rows: 12vw calc(100vh - 12vw);
+    font-family: Arial;
+}
+
+.researchForm{
+    display: grid;
+    width: 40vw;
+    margin: auto;
+}
+
+.input{
+    width: 100%;
+}
+
+label{
+    text-align: initial;
+    margin: auto auto 10px auto;
+    display: grid;
+}
+
+.button{
+    border: none;
+    font-size: 20px;
+}
+
+.button:hover{
+    cursor: pointer;
+}
+
+#logoBlock{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(113, 122, 70);
+    text-align: center;
+    justify-content: space-between;
+    display: grid;
+    grid-area: logo;
+}
+
+#leftBlock{
+    width: 20vw;
+    height: 100%;
+    background-color: rgb(113, 122, 70);
+    text-align: center;
+    display: grid;
+    grid-area: menu;
+}
+
+.leftButton{
+    width: 100%;
+    height: 70px;
+    background-color: rgb(172, 188, 141);
+    color: rgb(113, 122, 70);
+    font-size: 1.7vw;
+}
+
+.leftButton:hover, .activated {
+    background-color: rgb(113, 122, 70);
+    color: rgb(172, 188, 141);
+}
+
+#logo{
+    width: 100%;
+}
+
+#mainBlock{
+    background-color: rgb(172, 188, 141);
+    text-align: center;
+    grid-area: main;
+}
+
+
+#responseBlock{
+    background-color: rgb(172, 188, 141);
+    text-align: center;
+    grid-area: response;
+    overflow-x: auto;
+    overflow-y: auto;
+}
