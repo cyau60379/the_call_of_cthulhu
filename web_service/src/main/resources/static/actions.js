@@ -113,7 +113,7 @@ function authorSearch(){
 }
 
 /**
- * When clicking on the creature button, the main block change
+ * When clicking on the book button, the main block change
  */
 function onclickBook(){
     document.getElementById("mainBlock").innerHTML = "    <form name=\"researchForm\" class=\"researchForm\">\n" +
@@ -167,6 +167,60 @@ function bookSearch(){
         }
     };
     request.open("GET", "/bookSearch/" + searchType + "?name=" + name, true);
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.send();
+}
+
+/**
+ * When clicking on the affiliation button, the main block change
+ */
+function onclickAffiliation(){
+    document.getElementById("mainBlock").innerHTML = "    <form name=\"researchForm\" class=\"researchForm\">\n" +
+        "        <h1>\n" +
+        "            Affiliation Research\n" +
+        "        </h1>\n" +
+        "        <label>\n" +
+        "            Search: <input class=\"input\" name=\"name\">\n" +
+        "        </label>\n" +
+        "        <label>\n" +
+        "<select id=\"search\" name='searchType'>\n" +
+        "  <option value=\"name\">name</option>\n" +
+        "  <option value=\"creature\">creature</option>\n" +
+        "</select>" +
+        "        </label>\n" +
+        "\n" +
+        "        <div>\n" +
+        "            <input type=\"button\" class=\"button\" onclick=\"return affiliationSearch()\" value=\"search\">\n" +
+        "        </div>\n" +
+        "    </form>";
+    buttonActivation("affiliation");
+}
+
+/**
+ * Print the response from the server in the response block after the content was erased
+ */
+function affiliationSearch(){
+    let name = document.forms["researchForm"].elements["name"].value;
+    let searchType = document.forms["researchForm"].elements["searchType"].value;
+    let request;    //http request to ask for information about creature
+    request = new XMLHttpRequest();
+    request.onreadystatechange = function (){    //apply the function if the if condition passed
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+            let jsonResponse = JSON.parse(this.responseText);
+            let str = "";
+            for(let i = 0; i < jsonResponse.length; i++){
+                str += "<div style='border: black solid'><h3>Name:</h3><p>" + jsonResponse[i]['name'] + "</p>"
+                    + "<h3>Creatures:</h3>";
+                for(let j = 0; j < jsonResponse[i]['creature'].length; j++){
+                    str += "<p>" + jsonResponse[i]['creature'][j] + "</p>";
+                }
+                str += "</div>";
+                document.getElementById("responseBlock").innerHTML = str;
+            }
+        }
+    };
+    request.open("GET", "/affiliationSearch/" + searchType + "?name=" + name, true);
     request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     request.send();
 }

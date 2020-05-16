@@ -184,3 +184,48 @@ def book_search(request):
         response_list, signature_list = encrypt_data(book_json)
         response_json = {'message': response_list, 'signature': signature_list}
         return JsonResponse(response_json)  # send the JSON to the other web service
+
+
+@csrf_exempt
+def affiliation_search(request):
+    """
+    Function executed when the URL is [ip or URL]/web_service/affiliationSearch
+    :param request: the POST request sent by the other web service
+    :return: the JSON response which will be sent to the other web_service
+    """
+    json_request = json.loads(request.body.decode())  # transform string to JSON
+    message_body = verify_authenticity(json_request)  # verify the signature of the message
+    if message_body == "No":
+        error_message, error_signature = encrypt_data('error')
+        error = {'message': error_message, 'signature': error_signature}
+        return JsonResponse(error)  # send to the other web service the error response
+    else:
+        message_json = json.loads(message_body)
+        search_name = message_json['name']
+        search_type = message_json['searchType']
+        affiliation_object_list = Affiliation.objects.values('name')
+        # List of objects from the DB with the chosen columns
+
+        if search_type == "name":
+            affiliation_list = affiliation_object_list.filter(name=search_name)  # filter == WHERE in SQL
+        elif search_type == "creature":
+            affiliation_list = Creature.objects.values('affiliation__name').filter(name=search_name)
+            for i in range(len(affiliation_list)):
+                affiliation_list[i]['name'] = affiliation_list[i]['affiliation__name']
+        else:
+            affiliation_list = []
+
+        # for each JSON from the query, simplify the key, encrypt the message and create the signature for it
+        affiliation_json = []
+        for affiliation in affiliation_list:
+            creatures = Creature.objects.values('name').filter(affiliation__name=affiliation['name'])
+            creature_list = []
+            for creature in creatures:
+                if creature['name'] not in creature_list:
+                    creature_list.append(creature['name'])
+
+            affiliation_json.append({'name': affiliation['name'], 'creature': creature_list})
+
+        response_list, signature_list = encrypt_data(affiliation_json)
+        response_json = {'message': response_list, 'signature': signature_list}
+        return JsonResponse(response_json)  # send the JSON to the other web service

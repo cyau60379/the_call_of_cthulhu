@@ -78,5 +78,17 @@ public class WebServiceApplication extends SpringBootServletInitializer {
 		return Receiver.getRESTResponse("http://127.0.0.1:8000/web_service/bookSearch", name, "year");
     }
 	
+	// ====================================== Affiliation research
+	
+	@GetMapping("/affiliationSearch/name")
+    public String affiliationSearch(@RequestParam(value = "name", defaultValue = "Outer Gods") String name) throws URISyntaxException, NoSuchAlgorithmException {
+		return Receiver.getRESTResponse("http://127.0.0.1:8000/web_service/affiliationSearch", name, "name");
+    }
+	
+	@GetMapping("/affiliationSearch/creature")
+    public String affiliationSearchCreature(@RequestParam(value = "name", defaultValue = "Cthulhu") String name) throws URISyntaxException, NoSuchAlgorithmException {
+		return Receiver.getRESTResponse("http://127.0.0.1:8000/web_service/affiliationSearch", name, "creature");
+    }
+	
 }
 
