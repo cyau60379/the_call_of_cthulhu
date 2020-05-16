@@ -123,3 +123,64 @@ def author_search(request):
         response_list, signature_list = encrypt_data(author_json)
         response_json = {'message': response_list, 'signature': signature_list}
         return JsonResponse(response_json)  # send the JSON to the other web service
+
+
+@csrf_exempt
+def book_search(request):
+    """
+    Function executed when the URL is [ip or URL]/web_service/bookSearch
+    :param request: the POST request sent by the other web service
+    :return: the JSON response which will be sent to the other web_service
+    """
+    json_request = json.loads(request.body.decode())  # transform string to JSON
+    message_body = verify_authenticity(json_request)  # verify the signature of the message
+    if message_body == "No":
+        error_message, error_signature = encrypt_data('error')
+        error = {'message': error_message, 'signature': error_signature}
+        return JsonResponse(error)  # send to the other web service the error response
+    else:
+        message_json = json.loads(message_body)
+        search_name = message_json['name']
+        search_type = message_json['searchType']
+        book_object_list = Book.objects.values('name', 'year_of_creation', 'image_link', 'authorbook__author__surname')
+        # List of objects from the DB with the chosen columns
+
+        if search_type == "name":
+            book_list = book_object_list.filter(name=search_name)  # filter == WHERE in SQL
+        elif search_type == "year":
+            book_list = book_object_list.filter(year_of_creation=search_name)
+        elif search_type == "author":
+            author_name = search_name.split(" ")
+            book_list = book_object_list.filter(authorbook__author__surname=author_name[-1])
+        else:
+            book_list = []
+
+        # for each JSON from the query, simplify the key, encrypt the message and create the signature for it
+        book_json = []
+        for book in book_list:
+            authors = Author.objects.values('first_name',
+                                            'surname',
+                                            'birth_date',
+                                            'death_date').filter(authorbook__book__name=book['name'])
+            creatures = Creature.objects.values('name').filter(creaturebook__book__name=book['name'])
+
+            author_list = []
+            creature_list = []
+            for author in authors:
+                author_info = author['first_name'] + " " + author['surname'] \
+                            + " (" + str(author['birth_date']) + " - " + str(author['death_date']) + ")"
+                if author_info not in author_list:
+                    author_list.append(author_info)
+            for creature in creatures:
+                if creature['name'] not in creature_list:
+                    creature_list.append(creature['name'])
+
+            book_json.append({'name': book['name'],
+                              'year': "(" + str(book['year_of_creation']) + ")",
+                              'image': book['image_link'],
+                              'author': author_list,
+                              'creature': creature_list})
+
+        response_list, signature_list = encrypt_data(book_json)
+        response_json = {'message': response_list, 'signature': signature_list}
+        return JsonResponse(response_json)  # send the JSON to the other web service

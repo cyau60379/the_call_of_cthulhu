@@ -17,6 +17,8 @@ public class WebServiceApplication extends SpringBootServletInitializer {
 		SpringApplication.run(WebServiceApplication.class, args);
 	}
 	
+	// ====================================== Creature research 
+	
 	@GetMapping("/creatureSearch/creature")
     public String creatureSearch(@RequestParam(value = "name", defaultValue = "Cthulhu") String name) throws URISyntaxException, NoSuchAlgorithmException {
 		return Receiver.getRESTResponse("http://127.0.0.1:8000/web_service/creatureSearch", name, "creature");
@@ -37,6 +39,8 @@ public class WebServiceApplication extends SpringBootServletInitializer {
 		return Receiver.getRESTResponse("http://127.0.0.1:8000/web_service/creatureSearch", name, "affiliation");
     }
 	
+	// ====================================== Author research
+	
 	@GetMapping("/authorSearch/surname")
     public String authorSearchSurname(@RequestParam(value = "name", defaultValue = "Lovecraft") String name) throws URISyntaxException, NoSuchAlgorithmException {
 		return Receiver.getRESTResponse("http://127.0.0.1:8000/web_service/authorSearch", name, "surname");
@@ -56,5 +60,23 @@ public class WebServiceApplication extends SpringBootServletInitializer {
     public String authorSearchDeath(@RequestParam(value = "name", defaultValue = "1937") String name) throws URISyntaxException, NoSuchAlgorithmException {
 		return Receiver.getRESTResponse("http://127.0.0.1:8000/web_service/authorSearch", name, "death");
     }
+	
+	// ====================================== Book research
+	
+	@GetMapping("/bookSearch/book")
+    public String bookSearch(@RequestParam(value = "name", defaultValue = "The Call of Cthulhu") String name) throws URISyntaxException, NoSuchAlgorithmException {
+		return Receiver.getRESTResponse("http://127.0.0.1:8000/web_service/bookSearch", name, "name");
+    }
+	
+	@GetMapping("/bookSearch/author")
+    public String bookSearchAuthor(@RequestParam(value = "name", defaultValue = "Lovecraft") String name) throws URISyntaxException, NoSuchAlgorithmException {
+		return Receiver.getRESTResponse("http://127.0.0.1:8000/web_service/bookSearch", name, "author");
+    }
+	
+	@GetMapping("/bookSearch/year")
+    public String bookSearchYear(@RequestParam(value = "name", defaultValue = "1922") String name) throws URISyntaxException, NoSuchAlgorithmException {
+		return Receiver.getRESTResponse("http://127.0.0.1:8000/web_service/bookSearch", name, "year");
+    }
+	
 }
 

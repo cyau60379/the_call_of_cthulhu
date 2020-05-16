@@ -99,7 +99,7 @@ function authorSearch(){
                     str += "<p>" + jsonResponse[i]['book'][j] + "</p>";
                 }
                 str += "<h3>Creatures:</h3>";
-                for(let j = 0; j < jsonResponse[i]['book'].length; j++){
+                for(let j = 0; j < jsonResponse[i]['creature'].length; j++){
                     str += "<p>" + jsonResponse[i]['creature'][j] + "</p>";
                 }
                 str += "</div>";
@@ -108,6 +108,65 @@ function authorSearch(){
         }
     };
     request.open("GET", "/authorSearch/" + searchType + "?name=" + name, true);
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.send();
+}
+
+/**
+ * When clicking on the creature button, the main block change
+ */
+function onclickBook(){
+    document.getElementById("mainBlock").innerHTML = "    <form name=\"researchForm\" class=\"researchForm\">\n" +
+        "        <h1>\n" +
+        "            Book Research\n" +
+        "        </h1>\n" +
+        "        <label>\n" +
+        "            Search: <input class=\"input\" name=\"name\">\n" +
+        "        </label>\n" +
+        "        <label>\n" +
+        "<select id=\"search\" name='searchType'>\n" +
+        "  <option value=\"book\">book</option>\n" +
+        "  <option value=\"author\">author</option>\n" +
+        "  <option value=\"year\">year</option>\n" +
+        "</select>" +
+        "        </label>\n" +
+        "\n" +
+        "        <div>\n" +
+        "            <input type=\"button\" class=\"button\" onclick=\"return bookSearch()\" value=\"search\">\n" +
+        "        </div>\n" +
+        "    </form>";
+    buttonActivation("book");
+}
+
+/**
+ * Print the response from the server in the response block after the content was erased
+ */
+function bookSearch(){
+    let name = document.forms["researchForm"].elements["name"].value;
+    let searchType = document.forms["researchForm"].elements["searchType"].value;
+    let request;    //http request to ask for information about creature
+    request = new XMLHttpRequest();
+    request.onreadystatechange = function (){    //apply the function if the if condition passed
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+            let jsonResponse = JSON.parse(this.responseText);
+            let str = "";
+            for(let i = 0; i < jsonResponse.length; i++){
+                str += "<div style='border: black solid'><h3>Name:</h3><p>" + jsonResponse[i]['name'] + "</p>"
+                    + "<h3>Year:</h3><p>" + jsonResponse[i]['year'] + "</p><h3>Author(s):</h3>";
+                for(let j = 0; j < jsonResponse[i]['author'].length; j++){
+                    str += "<p>" + jsonResponse[i]['author'][j] + "</p>";
+                }
+                str += "<h3>Creatures:</h3>";
+                for(let j = 0; j < jsonResponse[i]['creature'].length; j++){
+                    str += "<p>" + jsonResponse[i]['creature'][j] + "</p>";
+                }
+                str += "</div>";
+                document.getElementById("responseBlock").innerHTML = str;
+            }
+        }
+    };
+    request.open("GET", "/bookSearch/" + searchType + "?name=" + name, true);
     request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     request.send();
 }
