@@ -27,12 +27,7 @@ public class Receiver {
 	 * @throws URISyntaxException
 	 * @throws NoSuchAlgorithmException
 	 */
-	public static String getRESTResponse(String url, String name, String type) throws URISyntaxException, NoSuchAlgorithmException{
-		JSONObject jsonRequest = new JSONObject();
-		jsonRequest.put("name", name);
-		jsonRequest.put("searchType", type);
-		String jsonString = jsonRequest.toString();
-		
+	public static String getRESTResponse(String url, String jsonString) throws URISyntaxException, NoSuchAlgorithmException{
 		RestTemplate template = new RestTemplate();  //the template of a HTTP request
 		
 		String encrypted = Encrypter.encrypt(jsonString, PUBLIC_KEY_DJANGO);   //encrytion of the message

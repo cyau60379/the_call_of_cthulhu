@@ -47,9 +47,9 @@ function creatureSearch(){
             }
         }
     };
-    request.open("GET", "/creatureSearch/" + searchType + "?name=" + name, true);
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.send();
+    request.open("POST", "/creatureSearch/" + searchType, true);
+    request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    request.send(JSON.stringify({"name": name, "searchType": searchType}));
 }
 
 /**
@@ -107,9 +107,9 @@ function authorSearch(){
             }
         }
     };
-    request.open("GET", "/authorSearch/" + searchType + "?name=" + name, true);
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.send();
+    request.open("POST", "/authorSearch/" + searchType, true);
+    request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    request.send(JSON.stringify({"name": name, "searchType": searchType}));
 }
 
 /**
@@ -166,9 +166,9 @@ function bookSearch(){
             }
         }
     };
-    request.open("GET", "/bookSearch/" + searchType + "?name=" + name, true);
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.send();
+    request.open("POST", "/bookSearch/" + searchType, true);
+    request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    request.send(JSON.stringify({"name": name, "searchType": searchType}));
 }
 
 /**
@@ -220,9 +220,9 @@ function affiliationSearch(){
             }
         }
     };
-    request.open("GET", "/affiliationSearch/" + searchType + "?name=" + name, true);
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.send();
+    request.open("POST", "/affiliationSearch/" + searchType, true);
+    request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    request.send(JSON.stringify({"name": name, "searchType": searchType}));
 }
 
 /**
