@@ -4,4 +4,4 @@ Cthulhu Research is a research API about the Cthulhu Mythos. You will find all i
 To start it, some libraries are need:
 
 	- json.jar which is in web_service/lib/ for Java
-	- rsa for Python
+	- rsa, json, django, base64 for Python
