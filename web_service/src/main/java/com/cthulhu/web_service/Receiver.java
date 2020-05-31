@@ -25,7 +25,6 @@ public class Receiver {
 	 * @param url: the URL to send the JSON request
 	 * @param jsonString: the JSON to send
 	 * @return: the decrypted response message
-	 * @throws URISyntaxException
 	 * @throws NoSuchAlgorithmException
 	 */
 	public static ResponseEntity<String> getRESTResponse(String url, String jsonString) throws NoSuchAlgorithmException {
@@ -53,7 +52,7 @@ public class Receiver {
 		    	response = e.getMessage();
 		    	JSONObject errorResponse = new JSONObject();
 		    	errorResponse.put("error", "Service Unavailable");
-		    	errorResponse.put("status", "503");
+		    	errorResponse.put("status", 503);
 		    	return new ResponseEntity<String>(errorResponse.toString(), HttpStatus.SERVICE_UNAVAILABLE);
 		    }
 		    
@@ -79,13 +78,14 @@ public class Receiver {
 		    	content.put("message", "Not verified");
 		    	System.out.println("Not verified");
 		    	returningResponse.put(content);
+		    	status = HttpStatus.BAD_REQUEST;
 		    }
 		    return new ResponseEntity<String>(returningResponse.toString(), status);
 		} catch (URISyntaxException e) {
 			System.out.println("Error: " + e.getMessage());
 			JSONObject errorResponse = new JSONObject();
 	    	errorResponse.put("error", "Not Found");
-	    	errorResponse.put("status", "404");
+	    	errorResponse.put("status", 404);
 	    	return new ResponseEntity<String>(errorResponse.toString(), HttpStatus.NOT_FOUND);
 		}
 	}

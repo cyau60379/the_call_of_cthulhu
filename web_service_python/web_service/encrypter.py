@@ -12,9 +12,9 @@ def verify_authenticity(json_request):
     :param json_request: the JSON sent by the other web server
     :return: the message body of the JSON
     """
-    encrypted_message = base64.b64decode(json_request['message'].encode())
-    signature = base64.b64decode(json_request['signature'].encode())
     try:
+        encrypted_message = base64.b64decode(json_request['message'].encode())
+        signature = base64.b64decode(json_request['signature'].encode())
         try:
             message = rsa.decrypt(encrypted_message, PRIVATE_KEY)
             is_good = rsa.verify(message, signature, PUBLIC_KEY_SPRING)
@@ -25,7 +25,7 @@ def verify_authenticity(json_request):
         except (rsa.pkcs1.DecryptionError, rsa.pkcs1.VerificationError):
             print("Decryption failed")
             return None
-    except AttributeError:
+    except (AttributeError, KeyError):
         print("Key problem detected")
         return None
 

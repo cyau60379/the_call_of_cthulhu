@@ -42,29 +42,34 @@ public class KeyLoader {
 	 * @return the byte table of the file's data
 	 */
 	private static byte[] prepareData(String fileLocation) {
-		
-		/******************** Variables **********************/
-		File file = new File(fileLocation);   //load the file
-		FileInputStream fileStream;    //input bytes from the file
-		DataInputStream dataStream;    //read Java primitive data types (here input bytes from fileStream)
-		byte[] byteData;    //bytes tab from the data file
-		
 		try {
-			fileStream = new FileInputStream(file);
-			dataStream = new DataInputStream(fileStream);
-	        byteData = new byte[(int)file.length()];
-	        try {    //fill with the bytes from the fileStream
-				dataStream.read(byteData);
-				dataStream.close();
-				return byteData;
-			} catch (IOException e) {
-				e.printStackTrace();
+			/******************** Variables **********************/
+			File file = new File(fileLocation);   //load the file
+			FileInputStream fileStream;    //input bytes from the file
+			DataInputStream dataStream;    //read Java primitive data types (here input bytes from fileStream)
+			byte[] byteData;    //bytes tab from the data file
+			
+			try {
+				fileStream = new FileInputStream(file);
+				dataStream = new DataInputStream(fileStream);
+		        byteData = new byte[(int)file.length()];
+		        try {    //fill with the bytes from the fileStream
+					dataStream.read(byteData);
+					dataStream.close();
+					return byteData;
+				} catch (IOException e) {
+					e.printStackTrace();
+					return null;
+				}
+			} catch (FileNotFoundException e) {
+				System.out.println("Error: File not found, PLEASE verify that the location " + fileLocation + " exists.");
 				return null;
 			}
-		} catch (FileNotFoundException e) {
-			System.out.println("Error: File not found, PLEASE verify that the location " + fileLocation + " exists.");
+		} catch(NullPointerException e) {
+			System.out.println("A null variable was given");
 			return null;
 		}
+		
 	}
 	
 	/**

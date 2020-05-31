@@ -36,7 +36,8 @@ public class Encrypter {
 				| NoSuchPaddingException 
 				| IllegalBlockSizeException 
 				| BadPaddingException 
-				| InvalidKeyException e) {
+				| InvalidKeyException
+				| NullPointerException e) {
 			System.out.println("Error: " + e.getMessage());
 			return null;
 		}
@@ -61,7 +62,8 @@ public class Encrypter {
 				| NoSuchPaddingException 
 				| IllegalBlockSizeException 
 				| BadPaddingException 
-				| InvalidKeyException e) {
+				| InvalidKeyException
+				| NullPointerException e) {
 			System.out.println("Error: " + e.getMessage());
 			return null;
 		}
@@ -80,7 +82,7 @@ public class Encrypter {
 		    signatory.initSign(privateKey);
 		    signatory.update(data.getBytes());
 		    return Base64.getEncoder().encodeToString(signatory.sign());
-		} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
+		} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException | NullPointerException e) {
 			System.out.println("Error: " + e.getMessage());
 			return null;
 		}
@@ -101,7 +103,7 @@ public class Encrypter {
 			publicSignature.initVerify(publicKey);
 			publicSignature.update(Base64.getDecoder().decode(data));
 			return publicSignature.verify(Base64.getDecoder().decode(signature));
-		} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
+		} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException | NullPointerException e) {
 			System.out.println("Error: " + e.getMessage());
 			return false;
 		}
