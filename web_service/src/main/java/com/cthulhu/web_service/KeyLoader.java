@@ -31,7 +31,7 @@ public class KeyLoader {
 			KeyFactory factory = KeyFactory.getInstance(algorithm);    //initialize the factory on RSA algorithm
 			return factory;
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			System.out.println("No such algorithm: Verify that you use an existing algorithm");
 			return null;
 		}
 	}
@@ -90,7 +90,7 @@ public class KeyLoader {
 		try {
 			privateKey = factory.generatePrivate(privateSpecification);  //generate the new key
 		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
+			System.out.println("Unvailable Key Spec: Verify that you use the right key");
 			privateKey = null;
 		}
 		return privateKey;   //return the private key
@@ -119,23 +119,9 @@ public class KeyLoader {
 		try {
 			publicKey = factory.generatePublic(publicSpecification);  //generate the new key
 		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
+			System.out.println("Unvailable Key Spec: Verify that you use the right key");
 			publicKey = null;
 		}
 		return publicKey;   //return the public key
 	}
-	
-	/**
-	public static void main(String[] args) {
-		byte[] pk = KeyLoader.getPrivateKey("src\\main\\resources\\static\\privateKeySpring.der").getEncoded();
-        for(int i = 0; i < pk.length; i++) {
-        	System.out.print(pk[i]);
-        }
-        System.out.println();
-		byte[] pubk = KeyLoader.getPublicKey("src\\main\\resources\\static\\publicKeyDjango.der").getEncoded();
-        for(int i = 0; i < pubk.length; i++) {
-        	System.out.print(pubk[i]);
-        }
-	}
-	**/
 }

@@ -31,13 +31,13 @@ public class Encrypter {
 			encoder.init(Cipher.ENCRYPT_MODE, publicKey);
 			byte[] encryptedData = encoder.doFinal(data.getBytes());
 			String stringEncryptedData = Base64.getEncoder().encodeToString(encryptedData);
-            return stringEncryptedData;
+			return stringEncryptedData;
 		} catch (NoSuchAlgorithmException 
 				| NoSuchPaddingException 
 				| IllegalBlockSizeException 
 				| BadPaddingException 
 				| InvalidKeyException e) {
-			e.printStackTrace();
+			System.out.println("Error: " + e.getMessage());
 			return null;
 		}
 	}
@@ -62,7 +62,7 @@ public class Encrypter {
 				| IllegalBlockSizeException 
 				| BadPaddingException 
 				| InvalidKeyException e) {
-			e.printStackTrace();
+			System.out.println("Error: " + e.getMessage());
 			return null;
 		}
 	}
@@ -81,13 +81,12 @@ public class Encrypter {
 		    signatory.update(data.getBytes());
 		    return Base64.getEncoder().encodeToString(signatory.sign());
 		} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
-			e.printStackTrace();
+			System.out.println("Error: " + e.getMessage());
 			return null;
 		}
 	}
 	
 	
-
 	/**
 	 * Function to verify the message sent by the other web service
 	 * @param data: the message sent by the other web server
@@ -103,17 +102,8 @@ public class Encrypter {
 			publicSignature.update(Base64.getDecoder().decode(data));
 			return publicSignature.verify(Base64.getDecoder().decode(signature));
 		} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
-			e.printStackTrace();
+			System.out.println("Error: " + e.getMessage());
 			return false;
 		}
 	}
-
-	/*
-	public static void main(String[] args) {
-		String data = "message";
-		String encrypt = Encrypter.encrypt(data, KeyLoader.getPublicKey("src\\main\\resources\\static\\public_key_Django.der"));
-		System.out.println("message: " + encrypt);
-		System.out.println("message: " + Encrypter.decrypt(encrypt, KeyLoader.getPrivateKey("src\\main\\resources\\static\\privateKeySpring.der")));
-	}
-	*/
 }
