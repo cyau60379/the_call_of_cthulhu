@@ -21,28 +21,28 @@ public class WebServiceApplication extends SpringBootServletInitializer {
 	
 	// ====================================== Creature research 
 	
-	@PostMapping(value={"/creatureSearch/creature", "/creatureSearch/author", "/creatureSearch/book", "/creatureSearch/affiliation"})
+	@PostMapping(value={"/creatureSearch/creature", "/creatureSearch/author", "/creatureSearch/book", "/creatureSearch/affiliation"}, produces="application/json")
     public String creatureSearch(@RequestBody String jsonString) throws URISyntaxException, NoSuchAlgorithmException {
 		return Receiver.getRESTResponse(DJANGO_URL + "creatureSearch", jsonString);
     }
 	
 	// ====================================== Author research
 	
-	@PostMapping(value={"/authorSearch/surname", "/authorSearch/first_name", "/authorSearch/birth", "/authorSearch/death"})
+	@PostMapping(value={"/authorSearch/surname", "/authorSearch/first_name", "/authorSearch/birth", "/authorSearch/death"}, produces="application/json")
     public String authorSearchSurname(@RequestBody String jsonString) throws URISyntaxException, NoSuchAlgorithmException {
 		return Receiver.getRESTResponse(DJANGO_URL + "authorSearch", jsonString);
     }
 	
 	// ====================================== Book research
 	
-	@PostMapping(value={"/bookSearch/book", "/bookSearch/author", "/bookSearch/year"})
+	@PostMapping(value={"/bookSearch/book", "/bookSearch/author", "/bookSearch/year"}, produces="application/json")
     public String bookSearch(@RequestBody String jsonString) throws URISyntaxException, NoSuchAlgorithmException {
 		return Receiver.getRESTResponse(DJANGO_URL + "bookSearch", jsonString);
     }
 	
 	// ====================================== Affiliation research
 	
-	@PostMapping(value={"/affiliationSearch/name", "/affiliationSearch/creature"})
+	@PostMapping(value={"/affiliationSearch/name", "/affiliationSearch/creature"}, produces="application/json")
     public String affiliationSearch(@RequestBody String jsonString) throws URISyntaxException, NoSuchAlgorithmException {
 		return Receiver.getRESTResponse(DJANGO_URL + "affiliationSearch", jsonString);
     }

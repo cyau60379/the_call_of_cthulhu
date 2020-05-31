@@ -1,0 +1,3 @@
+Catch JSONException si 500 ou 404, ...
+
+Affiche si erreur

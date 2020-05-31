@@ -36,7 +36,7 @@ public class Receiver {
 		JSONObject json = new JSONObject();  //JSON to be sent
 		json.put("message", encrypted);  //add the encrypted message to the JSON
 		json.put("signature", signature);  //add the signature to the JSON
-		
+		System.out.println(json.toString());
 		RequestEntity<String> request = RequestEntity.post(new URI(url)).accept(MediaType.APPLICATION_JSON).body(json.toString());
 		//create the request which will be sent
 	    
@@ -44,10 +44,11 @@ public class Receiver {
 	    try{
 	    	ResponseEntity<String> responseEntity = template.exchange(request,  String.class);
 	        response = responseEntity.getBody();  //retrieve the content of the response
-	        System.out.println("Reponse received");
+	        System.out.println("Response received");
 	    } catch(Exception e){
 	    	System.out.println("Failure to get response");
 	    	response = e.getMessage();
+	    	System.out.println(response);  //change here
 	    }
 	    
 	    JSONObject jsonResponse = new JSONObject(response);  //transform string to JSON
